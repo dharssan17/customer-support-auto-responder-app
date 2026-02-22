@@ -1,0 +1,258 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Chat container */
+.chat-container {
+    width: 100%;
+    max-width: 500px;
+    height: 600px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Chat header */
+.chat-header {
+    background: #0066CC;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header h1 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Message display area */
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Message styles */
+.message {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.user-message {
+    background: #0066CC;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.bot-message {
+    background: white;
+    color: #333;
+    align-self: flex-start;
+    border: 1px solid #e0e0e0;
+    border-bottom-left-radius: 4px;
+}
+
+/* Input area */
+.chat-input-area {
+    display: flex;
+    padding: 16px;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    gap: 10px;
+}
+
+#messageInput {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 24px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#messageInput:focus {
+    border-color: #0066CC;
+}
+
+#sendButton {
+    padding: 12px 24px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#sendButton:hover {
+    background: #0052a3;
+}
+
+#sendButton:active {
+    background: #003d7a;
+}
+
+/* Scrollbar styling */
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Satisfaction question and buttons */
+.satisfaction-question {
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+    margin-left: 0;
+    font-style: italic;
+}
+
+.satisfaction-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    margin-left: 0;
+    align-self: flex-start;
+}
+
+.satisfaction-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.yes-btn {
+    background: #28a745;
+    color: white;
+}
+
+.yes-btn:hover {
+    background: #218838;
+}
+
+.yes-btn:active {
+    background: #1e7e34;
+}
+
+.no-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.no-btn:hover {
+    background: #c82333;
+}
+
+.no-btn:active {
+    background: #bd2130;
+}
+
+/* Ticket form */
+.ticket-form-container {
+    margin-top: 12px;
+    margin-left: 0;
+    align-self: flex-start;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    max-width: 300px;
+}
+
+.ticket-form-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.ticket-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ticket-form label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+}
+
+.ticket-form input {
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.ticket-form input:focus {
+    border-color: #0066CC;
+}
+
+.ticket-submit-btn {
+    padding: 10px 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 4px;
+}
+
+.ticket-submit-btn:hover {
+    background: #0052a3;
+}
+
+.ticket-submit-btn:active {
+    background: #003d7a;
+}
+

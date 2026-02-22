@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company_name }} - Support Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <h1>{{ company_name }}</h1>
+        </div>
+
+        <!-- Message Display Area -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be dynamically added here -->
+        </div>
+
+        <!-- Input Area -->
+        <div class="chat-input-area">
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="Type your message..." 
+                autocomplete="off"
+            >
+            <button id="sendButton">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Function to add a message to the chat display
+        function addMessage(text, isUser = true, showSatisfaction = false, showTicketForm = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = isUser ? 'message user-message' : 'message bot-message';
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            
+            // Add ticket form if escalation is triggered
+            if (!isUser && showTicketForm) {
+                showTicketFormElement();
+            }
+            
+            // Add satisfaction buttons if needed (only for bot messages)
+            if (!isUser && showSatisfaction) {
+                // Add satisfaction question text
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'satisfaction-question';
+                questionDiv.textContent = 'Did this solution resolve your issue?';
+                chatMessages.appendChild(questionDiv);
+                
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'satisfaction-buttons';
+                
+                const yesButton = document.createElement('button');
+                yesButton.className = 'satisfaction-btn yes-btn';
+                yesButton.textContent = 'Yes, issue resolved';
+                yesButton.onclick = () => handleSatisfaction('yes');
+                
+                const noButton = document.createElement('button');
+                noButton.className = 'satisfaction-btn no-btn';
+                noButton.textContent = 'No, still facing issue';
+                noButton.onclick = () => handleSatisfaction('no');
+                
+                buttonContainer.appendChild(yesButton);
+                buttonContainer.appendChild(noButton);
+                chatMessages.appendChild(buttonContainer);
+            }
+            
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to show ticket form
+        function showTicketFormElement() {
+            // Remove any existing ticket form
+            const existingForm = document.querySelector('.ticket-form-container');
+            if (existingForm) {
+                existingForm.remove();
+            }
+
+            const formContainer = document.createElement('div');
+            formContainer.className = 'ticket-form-container';
+            
+            const formTitle = document.createElement('div');
+            formTitle.className = 'ticket-form-title';
+            formTitle.textContent = 'Please provide your contact information:';
+            formContainer.appendChild(formTitle);
+            
+            const form = document.createElement('form');
+            form.className = 'ticket-form';
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                submitTicket(form);
+            };
+            
+            // Name input
+            const nameLabel = document.createElement('label');
+            nameLabel.textContent = 'Name:';
+            nameLabel.setAttribute('for', 'ticket-name');
+            form.appendChild(nameLabel);
+            
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.id = 'ticket-name';
+            nameInput.name = 'name';
+            nameInput.required = true;
+            nameInput.placeholder = 'Enter your name';
+            form.appendChild(nameInput);
+            
+            // Email input
+            const emailLabel = document.createElement('label');
+            emailLabel.textContent = 'Email:';
+            emailLabel.setAttribute('for', 'ticket-email');
+            form.appendChild(emailLabel);
+            
+            const emailInput = document.createElement('input');
+            emailInput.type = 'email';
+            emailInput.id = 'ticket-email';
+            emailInput.name = 'email';
+            emailInput.required = true;
+            emailInput.placeholder = 'Enter your email';
+            form.appendChild(emailInput);
+            
+            // Submit button
+            const submitButton = document.createElement('button');
+            submitButton.type = 'submit';
+            submitButton.className = 'ticket-submit-btn';
+            submitButton.textContent = 'Submit';
+            form.appendChild(submitButton);
+            
+            formContainer.appendChild(form);
+            chatMessages.appendChild(formContainer);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to submit ticket
+        async function submitTicket(form) {
+            const formData = new FormData(form);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            
+            try {
+                const response = await fetch('/create_ticket', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name: name, email: email })
+                });
+                
+                const data = await response.json();
+                
+                // Remove ticket form
+                const formContainer = document.querySelector('.ticket-form-container');
+                if (formContainer) {
+                    formContainer.remove();
+                }
+                
+                // Display confirmation message
+                if (data.message) {
+                    addMessage(data.message, false, false, false);
+                } else if (data.error) {
+                    addMessage('Sorry, there was an error creating your ticket. Please try again.', false, false, false);
+                }
+            } catch (error) {
+                console.error('Error submitting ticket:', error);
+                addMessage('Sorry, there was an error creating your ticket. Please try again.', false, false, false);
+            }
+        }
+
+        // Function to send message to server
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            
+            if (!message) {
+                return;
+            }
+
+            // Display user message
+            addMessage(message, true);
+            messageInput.value = '';
+
+            try {
+                // Send message to server using fetch
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await response.json();
+                
+                // Display bot response with satisfaction buttons or ticket form if needed
+                if (data.message) {
+                    addMessage(
+                        data.message, 
+                        false, 
+                        data.show_satisfaction || false,
+                        data.show_ticket_form || false
+                    );
+                }
+            } catch (error) {
+                console.error('Error sending message:', error);
+                addMessage('Sorry, there was an error processing your message.', false);
+            }
+        }
+
+        // Function to handle satisfaction feedback
+        async function handleSatisfaction(choice) {
+            // Remove satisfaction question and buttons
+            const question = document.querySelectorAll('.satisfaction-question');
+            question.forEach(q => q.remove());
+            const buttons = document.querySelectorAll('.satisfaction-buttons');
+            buttons.forEach(btn => btn.remove());
+
+            try {
+                // Send satisfaction choice to server
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ satisfaction: choice })
+                });
+
+                const data = await response.json();
+                
+                // Display response
+                if (data.message) {
+                    addMessage(
+                        data.message, 
+                        false, 
+                        data.show_satisfaction || false,
+                        data.show_ticket_form || false
+                    );
+                }
+            } catch (error) {
+                console.error('Error sending satisfaction:', error);
+                addMessage('Sorry, there was an error processing your feedback.', false);
+            }
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
+

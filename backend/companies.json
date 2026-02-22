@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "name": "TechCorp Solutions",
+    "logo_url": "https://example.com/logos/techcorp.png",
+    "theme_color": "#0066CC",
+    "support_email": "support@techcorp.com",
+    "faqs": [
+      {
+        "question": "What are your business hours?",
+        "answer": "We are available Monday through Friday, 9 AM to 6 PM EST."
+      },
+      {
+        "question": "How do I reset my password?",
+        "answer": "You can reset your password by clicking the 'Forgot Password' link on the login page."
+      },
+      {
+        "question": "Do you offer refunds?",
+        "answer": "Yes, we offer a 30-day money-back guarantee on all our products."
+      }
+    ]
+  },
+  {
+    "id": "company2",
+    "name": "Global Services Inc",
+    "logo_url": "https://example.com/logos/global.png",
+    "theme_color": "#00AA44",
+    "support_email": "help@globalservices.com",
+    "faqs": [
+      {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept all major credit cards, PayPal, and bank transfers."
+      },
+      {
+        "question": "How long does shipping take?",
+        "answer": "Standard shipping takes 5-7 business days. Express shipping is available for 2-3 business days."
+      },
+      {
+        "question": "Can I track my order?",
+        "answer": "Yes, you will receive a tracking number via email once your order ships."
+      }
+    ]
+  },
+  {
+    "id": "company3",
+    "name": "InnovateNow",
+    "logo_url": "https://example.com/logos/innovate.png",
+    "theme_color": "#FF6600",
+    "support_email": "support@innovatenow.com",
+    "faqs": [
+      {
+        "question": "Do you provide technical support?",
+        "answer": "Yes, we offer 24/7 technical support via email, chat, and phone."
+      },
+      {
+        "question": "What is your return policy?",
+        "answer": "Items can be returned within 14 days of purchase in original condition."
+      }
+    ]
+  }
+]
+

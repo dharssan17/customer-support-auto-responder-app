@@ -1,0 +1,18 @@
+[
+  {
+    "ticket_id": "ABD36CB9",
+    "company_id": "1",
+    "user_name": "Dharssan",
+    "user_email": "sample@mail",
+    "issue_summary": "delete database",
+    "timestamp": "2026-02-15T15:21:58.136876"
+  },
+  {
+    "ticket_id": "ED7D11AA",
+    "company_id": "1",
+    "user_name": "Dharssan",
+    "user_email": "dharssant@gmail.com",
+    "issue_summary": "forgot my password",
+    "timestamp": "2026-02-16T14:58:18.903159"
+  }
+]
